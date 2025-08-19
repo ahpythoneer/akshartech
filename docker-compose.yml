@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # Backend Flask service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - backend_data:/app/instance
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=${FLASK_ENV:-production}
+      - SECRET_KEY=${SECRET_KEY:-default_secret_key_for_development}
+      - DATABASE_URL=sqlite:///akshartech.db
+    restart: unless-stopped
+    networks:
+      - akshartech-network
+
+  # Frontend React service
+  frontend:
+    build:
+      context: ./frontend/akshartech-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - akshartech-network
+
+networks:
+  akshartech-network:
+    driver: bridge
+
+volumes:
+  backend_data:
+    driver: local
