@@ -28,6 +28,16 @@ def initialize_database():
             order=1
         )
         
+        # Home page specific content
+        home_hero = Content(
+            type='home',
+            key='hero',
+            title='Transform Your Business with Expert IT Solutions',
+            subtitle='Your Partner for Innovative IT Solutions',
+            content='From custom software development to strategic IT consulting, we deliver innovative solutions that drive growth and efficiency for your business.',
+            order=1
+        )
+        
         # Stats
         stats = [
             Content(type=ContentType.STAT.value, key='projects', title='500+', 
@@ -197,6 +207,7 @@ def initialize_database():
         
         # Add all content to the database
         db.session.add(hero)
+        db.session.add(home_hero)
         for item in stats + service_categories + software_services + consulting_services + support_services + [about] + [contact] + contact_details:
             db.session.add(item)
         

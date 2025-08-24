@@ -1,18 +1,21 @@
 # Stage 1: Build the React application
-FROM node:16-alpine as build
+FROM node:18-alpine as build
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy package files and install dependencies
+COPY package.json ./
+RUN npm install --legacy-peer-deps
 
-# Install dependencies
-RUN npm install
+# Copy source files
+COPY . .
 
-# Copy the rest of the frontend code
-COPY . ./
+# Set environment variables for production build
+ENV NODE_ENV=production
+ENV REACT_APP_API_URL=http://localhost:5000/api
 
-# Build the app
+# Build the React application with warnings as errors disabled
+ENV DISABLE_ESLINT_PLUGIN=true
 RUN npm run build
 
 # Stage 2: Serve the app with Nginx

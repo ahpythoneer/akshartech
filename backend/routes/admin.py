@@ -5,8 +5,8 @@ from app import db
 from models.user import User
 from forms.auth import LoginForm
 
-# Create blueprint
-admin_bp = Blueprint('admin', __name__)
+# Create blueprint with a unique name to avoid conflict with Flask-Admin
+admin_bp = Blueprint('admin_routes', __name__)
 
 @admin_bp.route('/')
 @login_required
@@ -31,7 +31,7 @@ def login():
         # Check if user exists and password is correct
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password', 'error')
-            return redirect(url_for('admin.login'))
+            return redirect(url_for('admin_routes.login'))
         
         # Log in the user
         login_user(user, remember=form.remember_me.data)
@@ -51,4 +51,4 @@ def login():
 def logout():
     """Admin logout"""
     logout_user()
-    return redirect(url_for('admin.login'))
+    return redirect(url_for('admin_routes.login'))

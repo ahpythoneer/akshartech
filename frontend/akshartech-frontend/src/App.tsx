@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 // Layouts
@@ -15,7 +15,7 @@ import NotFoundPage from './pages/NotFoundPage';
 function App() {
   return (
     <Router>
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />

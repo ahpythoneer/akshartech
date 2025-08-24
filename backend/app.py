@@ -34,7 +34,10 @@ def create_app(config=None):
     # Initialize extensions with the app
     db.init_app(app)
     migrate.init_app(app, db)
-    CORS(app)
+    
+    # Configure CORS with specific settings
+    CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+    
     admin.init_app(app)
     login_manager.init_app(app)
     
@@ -45,7 +48,7 @@ def create_app(config=None):
     
     app.register_blueprint(main_bp)
     app.register_blueprint(api_bp, url_prefix='/api')
-    app.register_blueprint(admin_bp, url_prefix='/admin')
+    app.register_blueprint(admin_bp, url_prefix='/admin', name='admin_routes')
     
     # Register visitor tracking middleware
     @app.before_request
